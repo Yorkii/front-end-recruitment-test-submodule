@@ -68,10 +68,10 @@
       <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="overview">
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <button action="button">Yeah, I want more bacon!</button>
+            <button action="button" id="add-bacon">Yeah, I want more bacon!</button>
           </section>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <img src="http://media.washtimes.com.s3.amazonaws.com/media/image/2015/02/23/bacon.jpg" alt="Bacon" style="width: 100%; height: 100%;">
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="bacon-container">
+            <img id="bacon-image" src="http://media.washtimes.com.s3.amazonaws.com/media/image/2015/02/23/bacon.jpg" alt="Bacon" style="width: 100%; height: 100%;">
           </section>
         </div>
         <footer class="mdl-mega-footer">
@@ -145,5 +145,15 @@
       ga('send', 'pageview');
     </script>
     <!-- Built with love using Web Starter Kit -->
+
+    <script>
+      const button = document.getElementById('add-bacon');
+      const image = document.getElementById('bacon-image');
+      const container = document.getElementById('bacon-container');
+
+      button.addEventListener('click', () => {
+          container.appendChild(image.cloneNode());
+      });
+    </script>
   </body>
 </html>
