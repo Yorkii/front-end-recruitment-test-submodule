@@ -63,6 +63,7 @@
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
           <a href="#overview" class="mdl-layout__tab is-active">Bacon</a>
+          <a href="#checkout" class="mdl-layout__tab">Checkout</a>
         </div>
       </header>
       <main class="mdl-layout__content">
@@ -74,6 +75,157 @@
             <img id="bacon-image" src="http://media.washtimes.com.s3.amazonaws.com/media/image/2015/02/23/bacon.jpg" alt="Bacon" style="width: 100%; height: 100%;">
           </section>
         </div>
+
+        <div class="mdl-layout__tab-panel" id="checkout">
+          <form id="checkout-form" method="post">
+            <div class="section--center mdl-grid checkout">
+              <div class="mdl-cell mdl-cell--8-col">
+                <h2 class="checkout-header">
+                  <span>1</span>
+                  <strong>Personal information</strong>
+                </h2>
+
+                <div class="checkout-section">
+                  <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                      <div class="checkout-input">
+                        <label for="first-name">First name</label>
+                        <input type="text" name="first_name" id="first-name" />
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                      <div class="checkout-input">
+                        <label for="last-name">Last name</label>
+                        <input type="text" name="last_name" id="last-name" />
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col">
+                      <div class="checkout-input">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" />
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                      <div class="checkout-input drop">
+                        <label for="country">Country</label>
+                        <select name="country" id="country">
+                          <option></option>
+                          <option value="us">Unites States</option>
+                          <option value="pl">Poland</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                      <div class="checkout-input">
+                        <label for="postal-code">Postal code</label>
+                        <input type="text" name="postal_code" id="postal-code" />
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col">
+                      <div class="checkout-input">
+                        <label for="phone-number">Phone number</label>
+                        <input type="text" name="phone_number" id="phone-number" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <h2 class="checkout-header">
+                  <span>2</span>
+                  <strong>Payments details <i class="material-icons">lock</i></strong>
+                </h2>
+
+                <div class="checkout-section">
+                  <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                      <div class="checkout-input">
+                        <label for="card-number">Credit Card Number</label>
+                        <input type="text" name="card_number" id="card-number" />
+                        <div id="card-logo"></div>
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                      <div class="checkout-input">
+                        <label for="card-cvc">Security code</label>
+                        <input type="text" name="card_cvc" id="card-cvc" />
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                      <div class="checkout-input">
+                        <label for="card-exp">Expiration date</label>
+                        <input type="text" name="card_exp" id="card-exp" />
+                      </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col">
+                      <div class="checkout-input">
+                        <button type="submit" id="checkout-form-submit">
+                          <i class="material-icons">shopping_cart</i> Complete purchase
+                        </button>
+                        <div id="checkout-form-success">
+                          Purchase completed <i class="material-icons">check</i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mdl-cell mdl-cell--4-col">
+                <div class="checkout-summary">
+                  <div class="checkout-summary-box">
+                    <div class="checkout-summary-header">Your order</div>
+                    <div class="checkout-summary-row">
+                      <div class="checkout-summary-row-title">
+                        Apple Watch Sport
+                      </div>
+                      <div class="checkout-summary-row-price">
+                        $ 580
+                      </div>
+                    </div>
+                    <div class="checkout-summary-row">
+                      <div class="checkout-summary-row-title">
+                        Modern Buckle
+                      </div>
+                      <div class="checkout-summary-row-price">
+                        $ 380
+                      </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="checkout-summary-row">
+                      <div class="checkout-summary-row-title">
+                        Total purchases
+                      </div>
+                      <div class="checkout-summary-row-price">
+                        $ 960.00
+                      </div>
+                    </div>
+                    <div class="checkout-summary-row">
+                      <div class="checkout-summary-row-title">
+                        Estimated tax
+                      </div>
+                      <div class="checkout-summary-row-price">
+                        $ 0
+                      </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="checkout-summary-row">
+                      <div class="checkout-summary-row-title bold">
+                        Total
+                      </div>
+                      <div class="checkout-summary-row-price big">
+                        $ 960
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
         <footer class="mdl-mega-footer">
           <div class="mdl-mega-footer--middle-section">
             <div class="mdl-mega-footer--drop-down-section">
@@ -131,6 +283,7 @@
     </div>
 
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
     <!-- build:js(app/) ../../scripts/main.min.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
@@ -147,13 +300,18 @@
     <!-- Built with love using Web Starter Kit -->
 
     <script>
-      const button = document.getElementById('add-bacon');
-      const image = document.getElementById('bacon-image');
-      const container = document.getElementById('bacon-container');
+        (function() {
+            'use strict';
 
-      button.addEventListener('click', () => {
-          container.appendChild(image.cloneNode());
-      });
+            // Bacon clone
+            const $button = $('#add-bacon');
+            const $image = $('#bacon-image');
+            const $container = $('#bacon-container');
+
+            $button.on('click', () => {
+                $container.append($image.clone());
+            });
+        })();
     </script>
   </body>
 </html>
