@@ -284,6 +284,8 @@
 
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/3.0.0/jquery.payment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.7.50/libphonenumber-js.min.js"></script>
     <!-- build:js(app/) ../../scripts/main.min.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
@@ -310,6 +312,150 @@
 
             $button.on('click', () => {
                 $container.append($image.clone());
+            });
+
+            // Form validation
+            $.fn.toggleInputError = function(toggle) {
+                this.parent('.checkout-input').toggleClass('has-error', toggle);
+
+                return this;
+            };
+
+            $.fn.validatorEvent = function(event, callback) {
+                if (this.data('validator-' + event)) {
+                    return this;
+                }
+
+                this.on('change', callback);
+                this.data('validator-' + event, 1);
+
+                return this;
+            };
+
+            $.fn.validate = function(type, validator) {
+                this.toggleInputError(!validator());
+
+                this.validatorEvent(type, () => {
+                    this.toggleInputError(!validator());
+                });
+
+                return this;
+            };
+
+            $.fn.validateEmail = function() {
+                return this.validate('email', () => {
+                    function validateEmail (email) {
+                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+                        return re.test(String(email).toLowerCase());
+                    }
+
+                    return validateEmail(this.val());
+                });
+            };
+
+            $.fn.validatePhone = function(defaultCountry) {
+                return this.validate('phone', () => {
+                    let parsedPhoneNumber = libphonenumber.parsePhoneNumberFromString($phone.val());
+
+                    // Parse for default country
+                    if (typeof(parsedPhoneNumber) === 'undefined') {
+                        parsedPhoneNumber = libphonenumber.parsePhoneNumberFromString($phone.val(), defaultCountry);
+                    }
+
+                    return typeof(parsedPhoneNumber) !== 'undefined';
+                });
+            };
+
+            $.fn.validateNotEmpty = function() {
+                return this.validate('not-empty', () => {
+                    return this.val().trim() !== '';
+                });
+            };
+
+            const $creditNumber = $('#card-number');
+            const $creditExpiry = $('#card-exp');
+            const $creditCvc = $('#card-cvc');
+            const $cardLogo = $('#card-logo');
+            const $checkoutForm = $('#checkout-form');
+            const $checkoutFormSubmit = $('#checkout-form-submit');
+            const $checkoutFormSuccess = $('#checkout-form-success');
+            const $phone = $('#phone-number');
+            const $country = $('#country');
+            const $email = $('#email');
+            const $firstName = $('#first-name');
+            const $lastName = $('#last-name');
+            const $postalCode = $('#postal-code');
+
+            $creditNumber.payment('formatCardNumber');
+            $creditExpiry.payment('formatCardExpiry');
+            $creditCvc.payment('formatCardCVC');
+
+            $checkoutForm.submit(function(e) {
+                e.preventDefault();
+
+                const cardType = $.payment.cardType($creditNumber.val());
+                const cardExpValue = $creditExpiry.payment('cardExpiryVal');
+                const validCcNumber = $.payment.validateCardNumber($creditNumber.val());
+                const validCcExpiry = $.payment.validateCardExpiry(cardExpValue);
+                const validCcCvc = $.payment.validateCardCVC($creditCvc.val(), cardType);
+
+                const defaultCountry = $country.val()
+                    ? $country.val().toUpperCase()
+                    : 'PL';
+
+                $phone.validatePhone(defaultCountry);
+                $email.validateEmail();
+                $firstName.validateNotEmpty();
+                $lastName.validateNotEmpty();
+                $postalCode.validateNotEmpty();
+                $country.validateNotEmpty();
+
+                $creditNumber.toggleInputError(!validCcNumber);
+                $creditExpiry.toggleInputError(!validCcExpiry);
+                $creditCvc.toggleInputError(!validCcCvc);
+
+                if (cardType) {
+                    $cardLogo.css('background-image', 'url("/images/submodule/' + cardType + '.png")');
+                } else {
+                    $cardLogo.css('background-image', '');
+                }
+
+                if ($checkoutForm.find('.has-error').length > 0) {
+                    return false;
+                }
+
+                // Simulate form sent
+                $checkoutFormSubmit.hide();
+                $checkoutFormSuccess.fadeIn();
+
+                return false;
+            });
+
+            $creditNumber.on('change', function(e) {
+                const cardType = $.payment.cardType($creditNumber.val());
+                const validInput = $.payment.validateCardNumber($creditNumber.val());
+
+                $creditNumber.toggleInputError(!validInput);
+
+                if (cardType) {
+                    $cardLogo.css('background-image', 'url("/images/submodule/' + cardType + '.png")');
+                } else {
+                    $cardLogo.css('background-image', '');
+                }
+            });
+
+            $creditExpiry.on('change', function(e) {
+                const cardExpValue = $creditExpiry.payment('cardExpiryVal');
+                const validInput = $.payment.validateCardExpiry(cardExpValue);
+                $creditExpiry.toggleInputError(!validInput);
+            });
+
+            $creditCvc.on('change', function(e) {
+                const cardType = $.payment.cardType($creditNumber.val());
+                const validInput = $.payment.validateCardCVC($creditCvc.val(), cardType);
+
+                $creditCvc.toggleInputError(!validInput);
             });
         })();
     </script>
